@@ -67,10 +67,6 @@
       <HintPath>..\packages\NUnit.3.2.0\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Sprache, Version=2.0.0.51, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sprache.2.0.0.51\lib\portable-net4+netcore45+win8+wp8+sl5+MonoAndroid+Xamarin.iOS10+MonoTouch\Sprache.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -81,7 +77,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Features\AdditionComparer\AdditionComparer.cs" />
+    <Compile Include="Features\AdditionComparer\CompareResult.cs" />
+    <Compile Include="Features\AdditionComparer\Model.cs" />
     <Compile Include="Features\AdditionComparer\NancyModule.cs" />
+    <Compile Include="Features\AdditionComparer\Parser\AutofacModule.cs" />
+    <Compile Include="Features\AdditionComparer\Parser\EnglishParser.cs" />
+    <Compile Include="Features\AdditionComparer\Parser\GermanParser.cs" />
+    <Compile Include="Features\AdditionComparer\Parser\IParser.cs" />
+    <Compile Include="Features\AdditionComparer\Parser\LanguageAttribute.cs" />
     <Compile Include="Features\AdditionComparer\Parser\ParserFactory.cs" />
     <Compile Include="Features\AdditionComparer\Tests\AdditionComparerTests.cs" />
     <Compile Include="Features\FrustratingAdditionCompare\Model.cs" />
@@ -92,6 +95,8 @@
     <Compile Include="Features\FrustratingAdditionCompare\Tests\FrustratingAdditionComparerTests.cs" />
     <Compile Include="Plumbing\IoC.cs" />
     <Compile Include="Plumbing\MyBootstrapper.cs" />
+    <Compile Include="Plumbing\Result.cs" />
+    <Compile Include="Plumbing\ResultExtensions.cs" />
     <Compile Include="Plumbing\TestHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

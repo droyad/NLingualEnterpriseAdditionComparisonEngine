@@ -20,7 +20,7 @@ namespace NLingualEnterpriseAdditionComparisonEngine.Web.Features.FrustratingAdd
 
             var result = Execute(input);
 
-            result.Should().Be(true);
+            result.Should().BeTrue();
         }
 
 
@@ -35,21 +35,21 @@ namespace NLingualEnterpriseAdditionComparisonEngine.Web.Features.FrustratingAdd
 
             var result = Execute(input);
 
-            result.Should().Be(false);
+            result.Should().BeFalse();
         }
 
         [Test]
-        public void InvalidLanguage()
+        public void InvalidLanguageAndNumber()
         {
             var input = new[]
             {
-                new Model() {Language = "en", Additions = "one two"},
+                new Model() {Language = "en", Additions = "one two foo"},
                 new Model() {Language = "zu", Additions = "kunye kubile kuthathu"}
             };
 
             var execute = (Action) (() => Execute(input));
 
-            execute.ShouldThrow<Exception>().WithMessage("Language zu is not supported");
+            execute.ShouldThrow<Exception>().WithMessage("foo is not a valid number for culture en-AU");
         }
 
         private static bool Execute(Model[] input)

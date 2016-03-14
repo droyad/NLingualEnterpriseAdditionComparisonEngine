@@ -7,7 +7,9 @@ namespace NLingualEnterpriseAdditionComparisonEngine.Web.Plumbing
         public static ILifetimeScope Incorporate()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterByAttributes(typeof(IoC).Assembly);
+            var assembly = typeof(IoC).Assembly;
+            builder.RegisterAssemblyModules(assembly);
+            builder.RegisterByAttributes(assembly);
             return builder.Build();
         }
     }

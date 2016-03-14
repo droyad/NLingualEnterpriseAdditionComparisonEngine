@@ -1,7 +1,9 @@
 ﻿using System;
+using Autofac;
 using FluentAssertions;
 using NLingualEnterpriseAdditionComparisonEngine.Web.Features.FrustratingAdditionCompare;
 using NLingualEnterpriseAdditionComparisonEngine.Web.Features.FrustratingAdditionCompare.Parsers;
+using NLingualEnterpriseAdditionComparisonEngine.Web.Plumbing;
 using NUnit.Framework;
 
 namespace NLingualEnterpriseAdditionComparisonEngine.Web.Features.AdditionComparer.Tests
@@ -19,7 +21,8 @@ namespace NLingualEnterpriseAdditionComparisonEngine.Web.Features.AdditionCompar
 
             var result = Execute(input);
 
-            result.Should().Be(true);
+            result.WasSuccessful.Should().BeTrue();
+            result.Value.Should().Be(CompareResult.Same);
         }
 
 
@@ -34,26 +37,30 @@ namespace NLingualEnterpriseAdditionComparisonEngine.Web.Features.AdditionCompar
 
             var result = Execute(input);
 
-            result.Should().Be(false);
+            result.WasSuccessful.Should().BeTrue();
+            result.Value.Should().Be(CompareResult.Different);
         }
 
         [Test]
-        public void InvalidLanguage()
+        public void InvalidLanguageAndNumber()
         {
             var input = new[]
             {
-                new Model() {Language = "en", Additions = "one two"},
+                new Model() {Language = "en", Additions = "one two foo"},
                 new Model() {Language = "zu", Additions = "kunye kubile kuthathu"}
             };
 
-            var execute = (Action) (() => Execute(input));
+            var result = Execute(input);
 
-            execute.ShouldThrow<Exception>().WithMessage("Language zu is not supported");
+            result.WasSuccessful.Should().BeFalse();
+            result.Errors.Length.Should().Be(2);
+            result.Errors.Should().Contain("Language zu is not supported");
+            result.Errors.Should().Contain("foo is not a valid number in English");
         }
 
-        private static bool Execute(Model[] input)
+        private static Result<CompareResult> Execute(Model[] input)
         {
-            var result = new AdditionComparer(new FrustratingParserFactory())
+            var result = IoC.Incorporate().Resolve<AdditionComparer>()
                 .Compare(input);
             return result;
         }
