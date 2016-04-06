@@ -24,9 +24,10 @@ namespace NLingualEnterpriseAdditionComparisonEngine.Web.Features.AdditionCompar
             if (models == null)
                 throw new ArgumentNullException(nameof(models));
 
+            var validateCorrectNumberOfModels = ValidateCorrectNumberOfModels(models);
             return SumArguments(models)
                  .InvertToList()
-                 .If(ValidateCorrectNumberOfModels(models))
+                 .If(validateCorrectNumberOfModels)
                  .Then(r => r.Distinct().Count())
                  .Then(c => c == 1 ? CompareResult.Same : CompareResult.Different);
         }
@@ -43,7 +44,7 @@ namespace NLingualEnterpriseAdditionComparisonEngine.Web.Features.AdditionCompar
 
         private IResult ValidateCorrectNumberOfModels(IReadOnlyCollection<Model> models)
         {
-            if (models.Count == 0)
+            if (models.Count == 1)
                 return Result.Failed("At least two additions are required for comparison");
 
             return Result.Success();
